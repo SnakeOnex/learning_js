@@ -12,9 +12,9 @@ Add tasks <br>
 Remove tasks <br>
 Clear tasks <br>
 Stores tasks in local memory <br>
+Filtering tasks by name<br>
 
 
 ### TODO
 
-Filtering tasks in real time <br>
 Warning messages <br>

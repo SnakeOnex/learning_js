@@ -5,7 +5,6 @@ const filter = document.querySelector('#filter');
 const taskInput = document.querySelector('#task')
 
 let tasks = getTasks();
-console.log(tasks);
 
 loadTasks();
 loadEventListeners();
@@ -15,6 +14,7 @@ function loadEventListeners() {
     form.addEventListener('submit', addTask);
     taskList.addEventListener('click', removeTask);
     clearBtn.addEventListener('click', clearTasks);
+    filter.addEventListener('keyup', filterTasks);
 }
 
 function addTask(e) {
@@ -52,22 +52,16 @@ function createListItem(taskValue) {
 }
 
 function removeTask(e) {
-    console.log('parek');
     let li;
 
     if (e.target.parentElement.classList.contains("delete-item")) {
         li = e.target.parentElement.parentElement; 
         
-        
-        console.log(e.target.parentElement.parentElement.textContent);
-
         let text = e.target.parentElement.parentElement.textContent;
         li.remove();
-        console.log(tasks);
         tasks = tasks.filter(function (task) {
             return task !== text;
         });
-        console.log(tasks);
         localStorage.setItem('tasks', JSON.stringify(tasks));
     }
 }
@@ -76,9 +70,6 @@ function clearTasks(e) {
     const ul = document.querySelector('ul.collection');
 
     const vals = ul.children;
-    console.log(vals);
-
-    console.log(vals.length);
 
     const len = vals.length;
     for (let i = 0; i < len; i++) {
@@ -92,7 +83,6 @@ function clearTasks(e) {
 function getTasks() {
     let tasks;
     if (localStorage.getItem('tasks') === null) {
-        console.log(123);
         tasks = []; 
     } else {
         tasks = JSON.parse(localStorage.getItem('tasks'));
@@ -102,9 +92,6 @@ function getTasks() {
 }
 
 function loadTasks() {
-    console.log(tasks);
-    console.log(123);
-
 
     const ul = document.querySelector('ul.collection');
     let li;
@@ -114,4 +101,25 @@ function loadTasks() {
         ul.appendChild(li);
     });
         
+}
+
+function filterTasks(e) {
+    let val = e.target.value.trim().toLowerCase();
+    const filtered = [];
+
+    tasks.forEach(function (task) {
+        if (task.toLowerCase().includes(val.toLowerCase())) {
+            filtered.push(task);
+        }
+    });
+    
+    const lis = document.querySelectorAll('li.collection-item');
+    lis.forEach(function (li) {
+        if (!filtered.includes(li.textContent)) {
+            li.style.display = 'none';
+        } else {
+            li.style.display = 'list-item';
+        }
+    });
+
 }
