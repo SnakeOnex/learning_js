@@ -2,7 +2,9 @@ const form = document.querySelector('#task-form');
 const taskList = document.querySelector('.collection');
 const clearBtn = document.querySelector('.clear-tasks');
 const filter = document.querySelector('#filter');
-const taskInput = document.querySelector('#task')
+const taskInput = document.querySelector('#task');
+const warning = document.querySelector('#warning');
+
 
 let tasks = getTasks();
 
@@ -21,17 +23,26 @@ function addTask(e) {
     e.preventDefault();
 
     const task = document.querySelector('#task').value;
+
+    if (task === '') {
+        console.log(warning.textContent);
+        warning.textContent = "You need to enter the task name first!";
+        warning.className = 'red-text text-darken-1';
+    } else {
     const ul = document.querySelector('ul.collection');
     
     const li = createListItem(task);
-   
+
     ul.appendChild(li);
 
     tasks.push(task);
     localStorage.setItem('tasks', JSON.stringify(tasks));
     
     taskInput.value = '';
+    warning.textContent = "Task succesfully added!"
+    warning.className = 'green-text text-darken-1';
 
+    }
 }
 
 function createListItem(taskValue) {
@@ -72,12 +83,14 @@ function clearTasks(e) {
     const vals = ul.children;
 
     const len = vals.length;
-    for (let i = 0; i < len; i++) {
-        vals[0].remove();
+    
+    if (confirm("Are you sure you want to clear all tasks?")) {
+        for (let i = 0; i < len; i++) {
+            vals[0].remove();
+        }
+        tasks = [];
+        localStorage.setItem('tasks', JSON.stringify(tasks));
     }
-    tasks = [];
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-
 }
 
 function getTasks() {
@@ -123,3 +136,5 @@ function filterTasks(e) {
     });
 
 }
+
+

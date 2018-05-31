@@ -13,8 +13,8 @@ Remove tasks <br>
 Clear tasks <br>
 Stores tasks in local memory <br>
 Filtering tasks by name<br>
+Warning messages <br>
 
 
 ### TODO
 
-Warning messages <br>
